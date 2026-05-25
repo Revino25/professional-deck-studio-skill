@@ -1,6 +1,6 @@
 ---
 name: professional-deck-studio
-description: Use when creating deck content, creating professional slides, reviewing deck storyline, reviewing slide aesthetics, or improving consulting-style presentations, pitch decks, and executive decks.
+description: Use when creating professional deck content, slides, reports, memos, one-pagers, proposals, reviewing storyline or aesthetics, or improving consulting-style executive documents.
 ---
 
 # Professional Deck Studio
@@ -82,6 +82,25 @@ Use the selected template's visual rules and assets as the design baseline. If n
 
 Do not use PHE style, PHE templates, or PHE assets unless the user explicitly asks for PHE or selects the `phe` template.
 
+## Content-First Creation Loop
+
+For any final document creation request, confirm the content before producing the final artifact. This applies to decks, slides, reports, memos, one-pagers, proposals, briefs, and any other professional document.
+
+If the user asks to create a final artifact and approved content does not already exist, run `Create Content` first. After drafting the content, ask:
+
+```text
+Apakah konten ini sudah baik untuk dilanjutkan ke pembuatan dokumen, atau perlu disesuaikan?
+```
+
+Loop until the user confirms the content is good:
+
+1. Create the content draft using the bundled McKinsey-style content method.
+2. Ask whether the content is approved or needs adjustment.
+3. If the user requests changes, revise the content and ask again.
+4. Proceed to slides, report, memo, one-pager, proposal, or other document creation only after the user confirms the content is good.
+
+Do not create final slide/document output from unapproved content unless the user explicitly says to skip content approval or asks for a rough prototype.
+
 ## Mode Router
 
 Choose exactly one primary mode from the user's request. If the user asks for multiple outcomes, run the modes in this order: content before slides, review before improvement.
@@ -90,6 +109,7 @@ Choose exactly one primary mode from the user's request. If the user asks for mu
 | --- | --- | --- |
 | Create Content | User wants the deck narrative, outline, storyline, ghost deck, slide messages, or content draft | Structured deck content only; no visual slide files |
 | Create Slides | User wants visual slides, a deck file, HTML deck, PDF/PPTX export, or slides from approved content/outline | HTML-first slide deck; PDF/PPTX only if requested |
+| Create Documents / Reports | User wants a report, memo, one-pager, proposal, brief, or non-slide document | Final document built only from approved content |
 | Review Content | User asks to review the story, logic, content, title quality, evidence, or executive narrative | Content findings and concrete rewrites |
 | Review Slides | User asks to review aesthetics, layout, visual quality, typography, spacing, or polish | Aesthetic findings and prioritized fixes |
 | Improve Content | User wants better storyline, action titles, executive summary, evidence framing, or ordering | Revised content with before/after where useful |
@@ -113,12 +133,23 @@ Read and apply `references/mckinsey-slide-craft-full.md`.
 
 Use `huashu-design`; run Dependency Bootstrap first if it is missing.
 
-1. Require approved content, an outline, an existing draft, or enough source material to create slide content first.
+1. If approved content does not exist, run Content-First Creation Loop first.
 2. Run Template / Theme Selection before deciding visual grammar.
 3. Default to HTML-first: the HTML deck is the source; PDF/PPTX are derivatives only when requested.
 4. If the deck has 5 or more slides, create 2 visually distinct showcase slides first to lock the visual grammar before producing the full deck.
 5. If editable PPTX is requested, follow the `huashu-design` editable-PPTX constraints from the first line of HTML.
 6. Use `generate-image` only for non-technical images or general-purpose infographic visuals that materially improve the deck. Run Dependency Bootstrap first if it is missing.
+
+## Create Documents / Reports
+
+Use this mode for reports, memos, one-pagers, proposals, briefs, or any non-slide professional document.
+
+1. If approved content does not exist, run Content-First Creation Loop first.
+2. Run Template / Theme Selection if the user has requested or implied a template, theme, brand, or house style.
+3. Use the approved content as the source of truth for document structure, headings, evidence, and conclusions.
+4. Choose the output format from user intent or template availability, such as DOCX, Markdown, HTML, PDF, or another requested format.
+5. Preserve the selected template's style rules, assets, and document conventions.
+6. Before final delivery, check that the final document still matches the approved content and does not introduce unsupported claims.
 
 ## Review Content
 
@@ -184,4 +215,4 @@ Do not use `generate-image` for technical diagrams, process flowcharts, system a
 - If no visual template/theme is specified for slide work, ask whether the user wants to use an existing local template or a GitHub template repo.
 - If the user says no template/theme is needed, use consulting-neutral.
 - If the user asks for content only, do not create slide files.
-- If the user asks for slides from weak or missing content, create or request approval for content first.
+- If the user asks for any final artifact from weak, missing, or unapproved content, run Content-First Creation Loop first.
