@@ -90,9 +90,19 @@ Do not use PHE style, PHE templates, or PHE assets unless the user explicitly as
 
 ## Content-First Creation Loop
 
-For any final document creation request, confirm the content before producing the final artifact. This applies to decks, slides, reports, memos, one-pagers, proposals, briefs, and any other professional document.
+For any final document creation request, the user must explicitly confirm the content before producing the final artifact. This applies to decks, slides, reports, memos, one-pagers, proposals, briefs, and any other professional document.
 
-If the user asks to create a final artifact and approved content does not already exist, run `Create Content` first. After drafting the content, ask:
+Do not assume any content is approved. Chat history, uploaded files, existing drafts, outlines, previous assistant messages, or the latest available content are only candidate source material until the user explicitly approves what should become the source of truth.
+
+Content is approved only when the user clearly confirms it, for example:
+
+- `approved`
+- `konten sudah oke`
+- `lanjut pakai konten ini`
+- `gunakan content draft ini`
+- another explicit instruction with the same meaning
+
+If there are multiple possible content sources, ask which one should be the source of truth before drafting or revising. If the user asks to create a final artifact and explicitly approved content does not already exist, run `Create Content` first. After drafting the content, ask:
 
 ```text
 Apakah konten ini sudah baik untuk dilanjutkan ke pembuatan dokumen, atau perlu disesuaikan?
@@ -105,7 +115,7 @@ Loop until the user confirms the content is good:
 3. If the user requests changes, revise the content and ask again.
 4. Proceed to slides, report, memo, one-pager, proposal, or other document creation only after the user confirms the content is good.
 
-Do not create final slide/document output from unapproved content unless the user explicitly says to skip content approval or asks for a rough prototype.
+Do not create final slide/document output from unapproved content unless the user explicitly says to skip content approval or asks for a rough prototype. If bypassing approval, label the output as a rough prototype and do not describe it as final.
 
 ## Mode Router
 
@@ -114,8 +124,8 @@ Choose exactly one primary mode from the user's request. If the user asks for mu
 | Mode | Use When | Output |
 | --- | --- | --- |
 | Create Content | User wants the deck narrative, outline, storyline, ghost deck, slide messages, or content draft | Structured deck content only; no visual slide files |
-| Create Slides | User wants visual slides, a deck file, HTML deck, PDF/PPTX export, or slides from approved content/outline | HTML-first slide deck; PDF/PPTX only if requested |
-| Create Documents / Reports | User wants a report, memo, one-pager, proposal, brief, or non-slide document | Final document built only from approved content |
+| Create Slides | User wants visual slides, a deck file, HTML deck, PDF/PPTX export, or slides from explicitly approved content | HTML-first slide deck; PDF/PPTX only if requested |
+| Create Documents / Reports | User wants a report, memo, one-pager, proposal, brief, or non-slide document | Final document built only from explicitly approved content |
 | Review Content | User asks to review the story, logic, content, title quality, evidence, or executive narrative | Content findings and concrete rewrites |
 | Review Slides | User asks to review aesthetics, layout, visual quality, typography, spacing, or polish | Aesthetic findings and prioritized fixes |
 | Improve Content | User wants better storyline, action titles, executive summary, evidence framing, or ordering | Revised content with before/after where useful |
@@ -139,7 +149,7 @@ Read and apply `references/mckinsey-slide-craft-full.md`.
 
 Use `huashu-design`; run Dependency Bootstrap first if it is missing.
 
-1. If approved content does not exist, run Content-First Creation Loop first.
+1. If explicitly approved content does not exist, run Content-First Creation Loop first.
 2. Run Template / Theme Selection before deciding visual grammar.
 3. Default to HTML-first: the HTML deck is the source; PDF/PPTX are derivatives only when requested.
 4. If the deck has 5 or more slides, create 2 visually distinct showcase slides first to lock the visual grammar before producing the full deck.
@@ -150,12 +160,12 @@ Use `huashu-design`; run Dependency Bootstrap first if it is missing.
 
 Use this mode for reports, memos, one-pagers, proposals, briefs, or any non-slide professional document.
 
-1. If approved content does not exist, run Content-First Creation Loop first.
+1. If explicitly approved content does not exist, run Content-First Creation Loop first.
 2. Run Template / Theme Selection before choosing document structure or visual styling.
-3. Use the approved content as the source of truth for document structure, headings, evidence, and conclusions.
+3. Use the explicitly approved content as the source of truth for document structure, headings, evidence, and conclusions.
 4. Choose the output format from user intent or template availability, such as DOCX, Markdown, HTML, PDF, or another requested format.
 5. Preserve the selected template's style rules, assets, and document conventions.
-6. Before final delivery, check that the final document still matches the approved content and does not introduce unsupported claims.
+6. Before final delivery, check that the final document still matches the explicitly approved content and does not introduce unsupported claims.
 
 ## Review Content
 
@@ -221,4 +231,5 @@ Do not use `generate-image` for technical diagrams, process flowcharts, system a
 - If no template/theme is specified for any final artifact, ask Template / Theme Selection and wait for the user to choose a template/theme or explicitly select `default`.
 - Do not use consulting-neutral unless the user explicitly selects `default`.
 - If the user asks for content only, do not create slide files.
-- If the user asks for any final artifact from weak, missing, or unapproved content, run Content-First Creation Loop first.
+- If the user asks for any final artifact from weak, missing, candidate, ambiguous, or unapproved content, run Content-First Creation Loop first.
+- Do not assume which content becomes the document or slide source; require explicit user confirmation of the source of truth before creating final output.
