@@ -1,0 +1,8 @@
+interface:
+  display_name: "Professional Deck Studio"
+  short_description: "Create, review, and improve executive decks"
+  brand_color: "#1F4E79"
+  default_prompt: "Use $professional-deck-studio to create a consulting-style executive deck from my brief."
+
+policy:
+  allow_implicit_invocation: true
