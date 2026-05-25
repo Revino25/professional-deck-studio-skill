@@ -40,7 +40,47 @@ Use for non-technical visual assets such as hero images, conceptual illustration
 4. If no local source exists, ask the user to provide a local path or install source. Do not invent a remote source.
 5. Before generating images, check for `OPENROUTER_API_KEY` in the environment or a nearby `.env`. If missing, explain that image generation needs an OpenRouter API key.
 
-Default visual direction is consulting-neutral. Do not use PHE style, PHE templates, or PHE assets unless the user explicitly asks for PHE.
+## Template / Theme Selection
+
+For visual work, determine the template or theme before creating, reviewing, or improving slides. This applies to `Create Slides`, `Review Slides`, and `Improve Slides`.
+
+If the user has not specified a template, theme, brand, or visual system, ask:
+
+```text
+Apakah ada template/theme yang ingin digunakan?
+```
+
+The user can answer with:
+
+- a local template name or slug, such as `phe`
+- a local path to a template folder
+- a GitHub repository URL containing templates
+- `tidak ada` / no template, which means use the consulting-neutral default
+
+When the user provides a local template name, search these locations:
+
+1. `~/.codex/memories/templates/<template-name>`
+2. `~/.codex/memories/templates/**/manifest.json`
+3. any local `professional-template-library/templates/<template-name>` folder in the current workspace or parent workspaces
+
+When the user provides a local path, inspect that folder directly.
+
+When the user provides a GitHub repository URL, ask for approval before cloning or fetching it. After access is available, look for:
+
+1. `templates/<template-name>/manifest.json`
+2. `templates/*/manifest.json`
+3. obvious template files such as `deck/*.html`, `deck/*style_guide.md`, `report/*.docx`, or `report/*style_guide.md`
+
+If a template is found, read only the relevant files:
+
+- `manifest.json`, if present
+- template `README.md`, if present
+- the relevant format style guide, such as `deck/*style_guide.md`
+- the relevant source template, such as `deck/*.html`
+
+Use the selected template's visual rules and assets as the design baseline. If no template is selected or available, use consulting-neutral: restrained palette, strong grid, executive typography, clear data exhibits, purposeful whitespace, and minimal decoration.
+
+Do not use PHE style, PHE templates, or PHE assets unless the user explicitly asks for PHE or selects the `phe` template.
 
 ## Mode Router
 
@@ -74,9 +114,9 @@ Read and apply `references/mckinsey-slide-craft-full.md`.
 Use `huashu-design`; run Dependency Bootstrap first if it is missing.
 
 1. Require approved content, an outline, an existing draft, or enough source material to create slide content first.
-2. Default to HTML-first: the HTML deck is the source; PDF/PPTX are derivatives only when requested.
-3. If the deck has 5 or more slides, create 2 visually distinct showcase slides first to lock the visual grammar before producing the full deck.
-4. Keep the default design consulting-neutral: restrained palette, strong grid, executive typography, clear data exhibits, purposeful whitespace, and minimal decoration.
+2. Run Template / Theme Selection before deciding visual grammar.
+3. Default to HTML-first: the HTML deck is the source; PDF/PPTX are derivatives only when requested.
+4. If the deck has 5 or more slides, create 2 visually distinct showcase slides first to lock the visual grammar before producing the full deck.
 5. If editable PPTX is requested, follow the `huashu-design` editable-PPTX constraints from the first line of HTML.
 6. Use `generate-image` only for non-technical images or general-purpose infographic visuals that materially improve the deck. Run Dependency Bootstrap first if it is missing.
 
@@ -98,6 +138,7 @@ Report structural issues first, then slide-level issues, then polish. Rewrite we
 
 Use `huashu-design`; run Dependency Bootstrap first if it is missing. Evaluate:
 
+- selected template/theme fit, or ask for template/theme first if not specified
 - visual hierarchy, typography, spacing, alignment, and composition
 - consistency of color, title treatment, footers, page numbers, charts, and image treatment
 - data exhibit clarity and whether the visual draws attention to the main insight
@@ -111,7 +152,7 @@ Prioritize issues that affect executive comprehension before minor polish.
 For improvement requests, separate findings and edits into `Content` and `Slides/Aesthetic`.
 
 - Improve Content: rewrite action titles, reorder slides, sharpen executive summary, split or merge overloaded slides, and strengthen evidence framing.
-- Improve Slides: establish or repair visual grammar, improve hierarchy, simplify crowded slides, align charts/tables, improve image use, and prepare output for requested export format.
+- Improve Slides: run Template / Theme Selection if no template/theme is set, establish or repair visual grammar, improve hierarchy, simplify crowded slides, align charts/tables, improve image use, and prepare output for requested export format.
 
 When a change is important, show before/after pairs for titles, ordering, or visual direction.
 
@@ -140,6 +181,7 @@ Do not use `generate-image` for technical diagrams, process flowcharts, system a
 
 - Language follows the user's prompt.
 - If no format is specified for visual slides, produce HTML-first.
-- If no visual brand is specified, use consulting-neutral.
+- If no visual template/theme is specified for slide work, ask whether the user wants to use an existing local template or a GitHub template repo.
+- If the user says no template/theme is needed, use consulting-neutral.
 - If the user asks for content only, do not create slide files.
 - If the user asks for slides from weak or missing content, create or request approval for content first.
