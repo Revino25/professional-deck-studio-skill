@@ -42,12 +42,12 @@ Use for non-technical visual assets such as hero images, conceptual illustration
 
 ## Template / Theme Selection
 
-For visual work, determine the template or theme before creating, reviewing, or improving slides. This applies to `Create Slides`, `Review Slides`, and `Improve Slides`.
+For any final artifact with visual or document formatting, determine the template or theme before creating, reviewing, or improving the output. This applies to `Create Slides`, `Create Documents / Reports`, `Review Slides`, and `Improve Slides`.
 
 If the user has not specified a template, theme, brand, or visual system, ask:
 
 ```text
-Apakah ada template/theme yang ingin digunakan?
+Template/theme apa yang ingin digunakan? Pilih nama template lokal, path folder, URL repo GitHub, atau `default` untuk consulting-neutral.
 ```
 
 The user can answer with:
@@ -55,7 +55,7 @@ The user can answer with:
 - a local template name or slug, such as `phe`
 - a local path to a template folder
 - a GitHub repository URL containing templates
-- `tidak ada` / no template, which means use the consulting-neutral default
+- `default`, which explicitly selects the built-in consulting-neutral visual direction
 
 When the user provides a local template name, search these locations:
 
@@ -78,7 +78,13 @@ If a template is found, read only the relevant files:
 - the relevant format style guide, such as `deck/*style_guide.md`
 - the relevant source template, such as `deck/*.html`
 
-Use the selected template's visual rules and assets as the design baseline. If no template is selected or available, use consulting-neutral: restrained palette, strong grid, executive typography, clear data exhibits, purposeful whitespace, and minimal decoration.
+Use the selected template's visual rules and assets as the design baseline.
+
+If the user explicitly selects `default`, use the built-in consulting-neutral direction: restrained palette, strong grid, executive typography, clear data exhibits, purposeful whitespace, and minimal decoration.
+
+If the user has not selected a template/theme or `default`, do not infer a fallback and do not proceed with final artifact creation. Ask the template/theme question and wait for the user's choice.
+
+If the user provides a template name, path, or repo that cannot be found or accessed, explain the issue and ask the user to choose another template, provide access, or explicitly select `default`. Do not silently switch to `default`.
 
 Do not use PHE style, PHE templates, or PHE assets unless the user explicitly asks for PHE or selects the `phe` template.
 
@@ -145,7 +151,7 @@ Use `huashu-design`; run Dependency Bootstrap first if it is missing.
 Use this mode for reports, memos, one-pagers, proposals, briefs, or any non-slide professional document.
 
 1. If approved content does not exist, run Content-First Creation Loop first.
-2. Run Template / Theme Selection if the user has requested or implied a template, theme, brand, or house style.
+2. Run Template / Theme Selection before choosing document structure or visual styling.
 3. Use the approved content as the source of truth for document structure, headings, evidence, and conclusions.
 4. Choose the output format from user intent or template availability, such as DOCX, Markdown, HTML, PDF, or another requested format.
 5. Preserve the selected template's style rules, assets, and document conventions.
@@ -212,7 +218,7 @@ Do not use `generate-image` for technical diagrams, process flowcharts, system a
 
 - Language follows the user's prompt.
 - If no format is specified for visual slides, produce HTML-first.
-- If no visual template/theme is specified for slide work, ask whether the user wants to use an existing local template or a GitHub template repo.
-- If the user says no template/theme is needed, use consulting-neutral.
+- If no template/theme is specified for any final artifact, ask Template / Theme Selection and wait for the user to choose a template/theme or explicitly select `default`.
+- Do not use consulting-neutral unless the user explicitly selects `default`.
 - If the user asks for content only, do not create slide files.
 - If the user asks for any final artifact from weak, missing, or unapproved content, run Content-First Creation Loop first.
